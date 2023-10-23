@@ -24,4 +24,5 @@ Reports for this project:
 
 3. Create pivot tables and charts.
 
-Using Excel tools I've created [Dashboard] for Superstore with all the key indicators.
+Using Excel tools I've created [Dashboard](https://github.com/atsterq/DE-101/blob/main/Module1/Sample%20-%20Superstore.xlsx) for Superstore with all the key indicators.
+![Superstore Dashboard](https://github.com/atsterq/DE-101/blob/main/Module1/Dashboard.png)
