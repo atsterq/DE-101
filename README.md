@@ -1,7 +1,7 @@
 # Data engineering 101
 What is data engineering and why is it important?  
 
-Data engineering makes data useful adn accessible for consumer by building secure and scalable data infrastructure.  
+Data engineering makes data useful and accessible for consumer by building secure and scalable data infrastructure.  
 
 An organization exists to deliver **value**. There are 3 key groups who can benefit from a business:
 - Business owners (shareholders);
