@@ -1,2 +1,6 @@
-- What is database and their advantage for working with data compared to Excel.
-- Practice with SQL, set up a database and load data into it, then use Excel/Google Sheets to visualize the data.
+- Database installation
+- Loading data into the database
+- SQL queries
+- Draw data model in SQLdbm
+- Draw charts in Google Sheets
+- Draw graphs in KlipFolio
