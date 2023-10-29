@@ -9,13 +9,6 @@ Example of data flow architecture created in [draw.io](https://app.diagrams.net/
 
 - **Business Layer**: The business layer is responsible for implementing the business logic and rules on top of the data. It involves data transformation, aggregation, and enrichment to create meaningful insights and value for the organization. This layer can also include the creation of views, tables, and materialized SQL code to support the analytics and reporting needs of the business.
 
-Citations:
-[1] https://www2.deloitte.com/nl/nl/pages/data-analytics/articles/layered-architecture-for-data-platforms.html
-[2] https://developer.ibm.com/articles/bd-archpatterns3/
-[3] https://www.altexsoft.com/blog/data-lake-architecture/
-[4] https://acm.sustech.edu.cn/btang/pub/IJBDI19_arch.pdf
-[5] https://www.knowledgehut.com/blog/big-data/big-data-architecture
-[6] https://mitchellsilv-79772.medium.com/layering-your-data-warehouse-f3da41a337e5
 # Excel analytic
 [Excel table](https://github.com/atsterq/DE-101/blob/main/Module1/Sample%20-%20Superstore.xls)  of Superstore orders for analytical purposes.  
 1. Summarize tables.
