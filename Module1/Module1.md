@@ -1,6 +1,21 @@
 # Analytic solution architecrure
 Example of data flow architecture created in [draw.io](https://app.diagrams.net/).  
-![Analytic solution architecture](https://github.com/atsterq/DE-101/blob/main/Module1/Analytic%20solution%20architercture.drawio.svg)
+
+![Analytic solution architecture](https://github.com/atsterq/DE-101/blob/main/Module1/Analytic%20solution%20architercture.drawio.svg)  
+
+- **Source Layer**: This layer is responsible for ingesting and collecting data from various sources, such as databases, files, streaming devices, and external APIs. The data can be structured, semi-structured, or unstructured, and it is the starting point of the data journey in the architecture.
+
+- **Storage Layer**: The storage layer is where the ingested data resides and undergoes transformations to make it more accessible and valuable for analysis. This layer is generally divided into different zones for ease of management and workflow efficiency. The data can be stored in various formats, such as object storage, relational databases, or NoSQL databases, depending on the specific requirements of the data platform.
+
+- **Business Layer**: The business layer is responsible for implementing the business logic and rules on top of the data. It involves data transformation, aggregation, and enrichment to create meaningful insights and value for the organization. This layer can also include the creation of views, tables, and materialized SQL code to support the analytics and reporting needs of the business.
+
+Citations:
+[1] https://www2.deloitte.com/nl/nl/pages/data-analytics/articles/layered-architecture-for-data-platforms.html
+[2] https://developer.ibm.com/articles/bd-archpatterns3/
+[3] https://www.altexsoft.com/blog/data-lake-architecture/
+[4] https://acm.sustech.edu.cn/btang/pub/IJBDI19_arch.pdf
+[5] https://www.knowledgehut.com/blog/big-data/big-data-architecture
+[6] https://mitchellsilv-79772.medium.com/layering-your-data-warehouse-f3da41a337e5
 # Excel analytic
 [Excel table](https://github.com/atsterq/DE-101/blob/main/Module1/Sample%20-%20Superstore.xls)  of Superstore orders for analytical purposes.  
 1. Summarize tables.
