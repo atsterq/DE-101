@@ -3,8 +3,8 @@
 - Installed [DBeaver](https://dbeaver.io/download/) - database management tool.
 
 # Connection to Databases and SQL
-- Used [orders](https://github.com/atsterq/DE-101/blob/main/Module2/2.3/create_orders_table.sql), [people](https://github.com/atsterq/DE-101/blob/main/Module2/2.3/create_people_table.sql) and [returns](https://github.com/atsterq/DE-101/blob/main/Module2/2.3/create_returns_table.sql) sql scripts to create relevant tables.
-- Wrote [SQL queries](https://github.com/atsterq/DE-101/blob/main/Module2/2.3/overview.sql) for overview by answering the following questions:
+- Used [orders](https://github.com/atsterq/DE-101/blob/main/Module2/2.3/create_orders_table.sql), [people](https://github.com/atsterq/DE-101/blob/main/Module2/2.3/create_people_table.sql) and [returns](https://github.com/atsterq/DE-101/blob/main/Module2/2.3/create_returns_table.sql) SQL scripts to create relevant tables;
+- To overview given dataset wrote [SQL queries](https://github.com/atsterq/DE-101/blob/main/Module2/2.3/overview.sql), showing the following metrics:
   - Total Sales;
   - Total Profit;
   - Profit Ratio;
@@ -19,5 +19,7 @@
   - Sales per region.
 
 # Draw data model in SQLdbm
+
 # Draw charts in Google Sheets
+
 # Draw graphs in KlipFolio
