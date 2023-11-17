@@ -1,5 +1,5 @@
 # SQL
-SQL is the most dominant language for data operations in data engineering. Data engineers use SQL to make data accessible for querying, collect raw data, clean it, model it, and let end-users access the clean data. So I decided to took [SQL course from learndb.ru](https://learndb.ru/courses).
+SQL is the most dominant language for data operations in data engineering. Data engineers use SQL to make data accessible for querying, collect raw data, clean it, model it, and let end-users access the clean data. So, to progress further I decided to took [SQL course from learndb.ru](https://learndb.ru/courses) and [here] lies practice part of that course.
 
 # Database installation
 - Installed [PostgreSQL](https://www.postgresql.org/download/) database;
