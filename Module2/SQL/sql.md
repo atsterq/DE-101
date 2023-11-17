@@ -4,7 +4,7 @@
 ## Вводные данные
 
 Диаграмма базы данных:  
-![schemaDiagram](https://github.com/atsterq/DE-101/blob/main/Module2/SQL/schemaDiagram.svg)
+![schemaDiagram](https://github.com/atsterq/DE-101/blob/main/Module2/SQL/schemaDiagram.svg).  
 [Подробное описание БД](https://github.com/atsterq/DE-101/blob/main/Module2/SQL/schema_description.md).  
 
 ## Введение
@@ -632,12 +632,7 @@ ORDER BY product_id
 ---
 
 ``` sql
-
-```
----
-
-``` sql
-
+test
 ```
 ---
 
