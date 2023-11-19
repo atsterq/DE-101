@@ -678,16 +678,35 @@ SELECT c.name,
 
 ```
 ---
+Подзапрос не вернул строк (4/9)
 
 ``` sql
+SELECT c.category_id,
+       c.name       
+  FROM category c
+ WHERE (SELECT 1
+          FROM product p
+         WHERE p.category_id = c.category_id
+         LIMIT 1) IS NULL
+ ORDER BY c.name
 
 ```
 ---
+Попадание в список значений (5/9)
 
 ``` sql
+SELECT e.employee_id,
+       e.last_name,
+       e.first_name,
+       e.rank_id
+  FROM employee e
+ WHERE e.employee_id IN (SELECT m.manager_id
+                           FROM employee m)
+ ORDER BY e.last_name, e.employee_id
 
 ```
 ---
+Отсутствие в списке значений (6/9)
 
 ``` sql
 
