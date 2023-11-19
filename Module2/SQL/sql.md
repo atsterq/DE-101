@@ -629,15 +629,38 @@ UNION ALL
 )
 ORDER BY product_id
 ```
----
+## Подзапросы
+
+Подзапрос одиночной строки (1/9)
 
 ``` sql
-
+SELECT p.name AS product_name,
+       pi.count,
+       pi.price
+  FROM purchase_item pi
+  JOIN product p
+    ON p.product_id = pi.product_id
+ WHERE pi.price = (SELECT max(pim.price)
+                     FROM purchase_item pim)
 ```
 ---
+Коррелированный подзапрос (2/9)
 
 ``` sql
-
+SELECT c.name AS category_name,
+       p.name as product_name,
+       pp.price
+  FROM product_price pp
+  JOIN product p
+    ON p.product_id = pp.product_id
+  JOIN category c
+    ON c.category_id = p.category_id
+ WHERE pp.price = (SELECT max (ppm.price)
+                     FROM product pm
+                     JOIN product_price ppm
+                       ON ppm.product_id = pm.product_id
+                    WHERE pm.category_id = p.category_id)
+ ORDER BY c.name, p.name
 ```
 ---
 
