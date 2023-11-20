@@ -732,14 +732,32 @@ SELECT e.employee_id,
  ORDER BY e.last_name, e.employee_id
 ```
 ---
+Проверка существования строки (8/9)
 
 ``` sql
-
+SELECT e.employee_id,
+       e.last_name,
+       e.first_name,
+       e.rank_id
+  FROM employee e
+ WHERE EXISTS (SELECT 1
+                 FROM employee m
+                WHERE m.manager_id = e.employee_id)
+ ORDER BY e.last_name, e.employee_id
 ```
 ---
+Проверка отсутствия строки (9/9)
 
 ``` sql
-
+SELECT e.employee_id,
+       e.last_name,
+       e.first_name,
+       e.rank_id
+  FROM employee e
+ WHERE NOT EXISTS (SELECT 1
+                     FROM employee m
+                    WHERE m.manager_id = e.employee_id)
+ ORDER BY e.last_name, e.employee_id
 ```
 ---
 
