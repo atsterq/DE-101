@@ -709,12 +709,27 @@ SELECT e.employee_id,
 Отсутствие в списке значений (6/9)
 
 ``` sql
+SELECT p.product_id,
+       p.name
+  FROM product p
+ WHERE p.product_id NOT IN (SELECT pi.product_id
+                              FROM purchase_item pi)
+ ORDER BY p.name
 
 ```
 ---
+NULL значения в NOT IN (7/9)
 
 ``` sql
-
+SELECT e.employee_id,
+       e.last_name,
+       e.first_name,
+       e.rank_id
+  FROM employee e
+ WHERE e.employee_id NOT IN (SELECT m.manager_id
+                               FROM employee m
+                              WHERE m.manager_id IS NOT NULL)
+ ORDER BY e.last_name, e.employee_id
 ```
 ---
 
