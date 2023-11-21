@@ -813,23 +813,49 @@ SELECT e.last_name,
 
 ```
 ---
+Дополнение до определенной длины (6/9)
 
 ``` sql
+SELECT last_name || ' ' || rpad(left(first_name, 1), length(first_name), '*') AS mask
+  FROM employee
+ ORDER BY mask
 
 ```
 ---
+TRIM - удаление символов с начала и конца строки (7/9)
 
 ``` sql
-
+SELECT rtrim (
+         concat(
+           e.last_name, ' ', 
+           e.first_name, ' ', 
+           e.middle_name
+         )
+       ) AS full_name
+  FROM employee e
+ ORDER BY full_name
 ```
 ---
+REPLACE - замена подстроки (8/9)
 
 ``` sql
-
+SELECT replace(replace(address, 'ул.', 'улица'), 'пр.', 'проспект') AS address_full
+  FROM store_address
+ ORDER BY address_full
 ```
 ---
+TRANSLATE - замена набора символов (9/9)
 
 ``` sql
+SELECT DISTINCT
+       first_name,
+       translate (
+         first_name,
+         'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЭЮЯабвгдеёжзийклмнопрстуфхцчшщыэюяЬЪьъ',
+         'ABVGDEEJZIJKLMNOPRSTUFHCHSSYEYAabvgdeejzijklmnoprstufhchssyeya'
+       ) AS first_name_translated
+  FROM employee
+ ORDER BY first_name
 
 ```
 ---
