@@ -759,29 +759,57 @@ SELECT e.employee_id,
                     WHERE m.manager_id = e.employee_id)
  ORDER BY e.last_name, e.employee_id
 ```
----
+## Строковые функции
+
+CONCAT - конкатенация строк (1/9)
 
 ``` sql
+SELECT concat(
+         e.last_name, ' ', 
+         e.first_name, ' ', 
+         e.middle_name, ';'
+       ) AS full_name
+  FROM employee e
+ ORDER BY full_name
 
 ```
 ---
+Преобразование регистра букв (2/9)
 
 ``` sql
-
+SELECT lower(e.last_name || ' ' || e.first_name) AS lower,
+       upper(e.last_name || ' ' || e.first_name) AS upper,
+       initcap(e.last_name || ' ' || e.first_name) AS initcap
+  FROM employee e
+ ORDER BY e.last_name, e.first_name
 ```
 ---
+LENGTH - определение длины строки (3/9)
 
 ``` sql
-
+SELECT e.last_name,
+       length(e.last_name) AS length
+  FROM employee e
+ ORDER BY length desc, last_name
 ```
 ---
+Извлечение подстроки (4/9)
 
 ``` sql
-
+SELECT e.employee_id,
+       e.last_name || ' ' || left(e.first_name, 1) || '.' as full_name
+  FROM employee e
+ ORDER BY e.last_name,
+          e.first_name
 ```
 ---
+POSITION - поиск подстроки (5/9)
 
 ``` sql
+SELECT e.last_name,
+       left(e.last_name, position('а' in lower(e.last_name))) AS substring
+  FROM employee e
+ ORDER BY e.last_name
 
 ```
 ---
