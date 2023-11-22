@@ -858,74 +858,184 @@ SELECT DISTINCT
  ORDER BY first_name
 
 ```
----
+# Математические функции
+Простейшие арифметические операции (+ - * /) (1/13)
+
 
 ``` sql
+SELECT pi.purchase_id,
+       pi.product_id,
+       pi.price,
+       pi.count,
+       pi.price * pi.count AS total_price
+  FROM purchase_item pi
+ ORDER BY pi.purchase_id,
+          pi.product_id
 
 ```
 ---
+Порядок выполнения операций (2/13)
 
 ``` sql
-
+SELECT pp.product_id,
+       pp.store_id,
+       pp.price,
+       (pp.price - (
+         SELECT min (ppa.price)
+           FROM product_price ppa
+          WHERE ppa.product_id = pp.product_id
+       )) * 0.5 AS discount
+  FROM product_price pp
+ ORDER BY pp.product_id, pp.price, pp.store_id
 ```
 ---
+Деление целых чисел (3/13)
 
 ``` sql
-
+SELECT purchase_item_id,
+       count,
+       count / 2 AS whole,
+       count / 2.0 AS fractional
+  FROM purchase_item
+ ORDER BY count desc
 ```
 ---
+Простейшие арифметические операции (% ^ !) (4/13)
 
 ``` sql
-
+SELECT purchase_item_id,
+       count,
+       count % 2 AS is_odd
+  FROM purchase_item
+ ORDER BY count desc
 ```
 ---
+Получение числа из строки (5/13)
 
 ``` sql
-
+SELECT t.timezone_id
+  FROM timezone t
+ WHERE right(t.time_offset, -4)::integer = 4
 ```
 ---
+ROUND - округление числа (6/13)
 
 ``` sql
-
+SELECT pp.store_id,
+       avg(pp.price) as average_price,
+       round(avg(pp.price), 2) AS average_price_rounded
+  FROM product_price pp
+ GROUP BY pp.store_id
+ ORDER BY average_price
 ```
 ---
+TRUNC - усечение числа (7/13)
 
 ``` sql
-
+SELECT pp.store_id,
+       avg(pp.price) as average_price,
+       round(avg(pp.price), 2) AS average_price_round,
+       trunc(avg(pp.price), 2) AS average_price_trunc
+  FROM product_price pp
+ GROUP BY pp.store_id
+ ORDER BY average_price
 ```
 ---
+CEIL - следующее целое число (8/13)
 
 ``` sql
-
+SELECT pp.product_id,
+       avg (pp.price) as price_avg,
+       round(avg (pp.price)) as price_avg_round,
+       ceil(avg(pp.price)) as price_avg_ceil
+  FROM product_price pp
+ GROUP BY pp.product_id
+ ORDER BY price_avg DESC
 ```
 ---
+FLOOR - предыдущее целое число (9/13)
 
 ``` sql
-
+SELECT pp.product_id,
+       avg (pp.price) as price_avg,
+       round(avg (pp.price)) as price_avg_round,
+       ceil(avg(pp.price)) as price_avg_ceil,
+       floor(avg(pp.price)) as price_avg_floor,
+       trunc(avg(pp.price)) as price_avg_trunc
+  FROM product_price pp
+ GROUP BY pp.product_id
+ ORDER BY price_avg DESC
 ```
 ---
+GREATEST - определение большего числа (10/13)
 
 ``` sql
-
+SELECT pp.product_id,
+       pp.store_id,
+       pp.price,
+       round(greatest(pp.price * 0.05, 1000)) AS prepayment
+  FROM product_price pp
+ ORDER BY pp.price,
+          pp.product_id,
+          pp.store_id
 ```
 ---
+LEAST - определение меньшего числа (11/13)
 
 ``` sql
-
+SELECT pp.product_id,
+       pp.store_id,
+       pp.price,
+       round(least(pp.price * 0.05, 1000)) AS prepayment_least,
+       round(greatest(pp.price * 0.05, 1000)) AS prepayment_greatest
+  FROM product_price pp
+ ORDER BY pp.price,
+          pp.product_id,
+          pp.store_id
 ```
 ---
+ABS - модуль числа (12/13)
 
 ``` sql
-
+SELECT pp.product_id,
+       pp.store_id,
+       pp.price,
+       (SELECT round (avg (ppa.price), 2)
+          FROM product_price ppa
+         WHERE ppa.product_id = pp.product_id
+       ) as price_avg,
+       abs (
+         round (
+           pp.price - (SELECT avg (ppa.price)
+                         FROM product_price ppa
+                        WHERE ppa.product_id = pp.product_id)
+           , 2)
+       ) AS price_difference
+  FROM product_price pp
+ ORDER BY pp.product_id, 
+          pp.price, 
+          pp.store_id
 ```
 ---
+TO_CHAR - форматирование числа (13/13)
 
 ``` sql
-
+SELECT pp.product_id,
+       pp.store_id,
+       pp.price,
+       to_char (pp.price, 'FM999G999G999G990D00') as price_formatted
+  FROM product_price pp
+ ORDER BY pp.price desc
 ```
----
+# Основы работы с датами
+## Текущая дата на сервере (1/12)
 
 ``` sql
+SELECT CURRENT_DATE AS date,
+       LOCALTIME AS time,
+       CURRENT_TIME AS time_with_timezone,
+       LOCALTIMESTAMP AS datetime,
+       CURRENT_TIMESTAMP AS datetime_with_timezone
 
 ```
 ---
