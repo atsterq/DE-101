@@ -1039,59 +1039,122 @@ SELECT CURRENT_DATE AS date,
 
 ```
 ---
+Точность (2/12)
 
 ``` sql
-
+SELECT CURRENT_DATE AS date,
+       LOCALTIME(0) AS time,
+       CURRENT_TIME(0) AS time_with_timezone,
+       LOCALTIMESTAMP(0) AS datetime,
+       CURRENT_TIMESTAMP(0) AS datetime_with_timezone
 ```
 ---
+Форматирование даты и времени (3/12)
 
 ``` sql
-
+SELECT p.purchase_id,
+       p.store_id,
+       p.purchase_date,
+       to_char(p.purchase_date, 'DD.MM.YYYY в HH24:MI') AS date_formatted
+  FROM purchase p
+ ORDER BY p.purchase_date
 ```
 ---
+Ввод даты и времени (4/12)
 
 ``` sql
-
+SELECT p.purchase_id,
+       p.store_id,
+       p.purchase_date
+  FROM purchase p
+ WHERE p.purchase_date < timestamp '2022-10-06 18:00'
+ ORDER BY p.purchase_date
 ```
 ---
+Ввод даты: to_date (5/12)
 
 ``` sql
-
+SELECT to_date('19.02.1861', 'DD.MM.YYYY') AS freedom_day
 ```
 ---
+Ввод даты со временем: to_timestamp (6/12)
 
 ``` sql
-
+SELECT to_timestamp('1 January 2023', 'DD Month YYYY') AS ts_from_string,
+       to_timestamp(1534896000) AS ts_from_unix_epoch
 ```
 ---
+Ввод времени (7/12)
 
 ``` sql
-
+SELECT time '04:05:06.789' AS "04:05:06.789",
+       time '04:05:06' AS "04:05:06",
+       time '04:05' AS "04:05",
+       time '040506' AS "040506",
+       time '04:05 AM' AS "04:05 AM",
+       time '04:05 PM' AS "04:05 PM"
 ```
 ---
+Ввод времени с часовым поясом (8/12)
 
 ``` sql
-
+SELECT y AS year, 
+       (y || '-01-01 12:00:00 Europe/Moscow')::time with time zone AS time_01,
+       (y || '-06-01 12:00:00 Europe/Moscow')::time with time zone AS time_06
+  FROM generate_series(2008, 2022) y
+ ORDER BY y
 ```
 ---
+Разность дат (9/12)
 
 ``` sql
-
+SELECT p.purchase_date,
+       current_timestamp,
+       current_timestamp - p.purchase_date AS diff_current_timestamp,
+       localtimestamp,
+       localtimestamp - p.purchase_date AS diff_localtimestamp,
+       current_date,
+       current_date - p.purchase_date AS diff_current_date
+  FROM purchase p
+ ORDER BY p.purchase_date
 ```
 ---
+Временные интервалы (10/12)
 
 ``` sql
-
+SELECT *
+  FROM purchase p
+ WHERE p.purchase_date <= (SELECT min (purchase_date) + interval '1 month'
+                             FROM purchase)
+ ORDER BY p.purchase_date
 ```
 ---
+Динамическое построение интервала (11/12)
 
 ``` sql
-
+SELECT p.purchase_id,
+       pr.name AS product_name,
+       p.purchase_date::date AS purchase_date,
+       pr.warranty_in_months,
+       (p.purchase_date + make_interval(months => pr.warranty_in_months))::date AS warranty_end
+  FROM purchase p
+  JOIN purchase_item pi
+    ON pi.purchase_id = p.purchase_id
+  JOIN product pr
+    ON pr.product_id = pi.product_id
+ ORDER BY p.purchase_id,
+          warranty_end
 ```
 ---
+Начало и конец месяца (12/12)
 
 ``` sql
-
+SELECT date_trunc('month', p.purchase_date)::date AS period_start,
+       (date_trunc('month', p.purchase_date) + interval '1 month - 1 day')::date AS period_end,
+       count(*) AS count_purchases
+  FROM purchase p
+ GROUP BY date_trunc('month', p.purchase_date)
+ ORDER BY period_start
 ```
 ---
 
