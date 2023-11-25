@@ -1156,9 +1156,15 @@ SELECT date_trunc('month', p.purchase_date)::date AS period_start,
  GROUP BY date_trunc('month', p.purchase_date)
  ORDER BY period_start
 ```
----
+# Рекурсивные подзапросы
+## Подзапрос во фразе FROM (1/12)
 
 ``` sql
+SELECT p.employee_id, p.purchase_id, SUM(pi.price * pi.count) AS total_purchase_price
+FROM purchase p
+JOIN purchase_item pi ON p.purchase_id = pi.purchase_id
+GROUP BY p.purchase_id
+order by employee_id
 
 ```
 ---
