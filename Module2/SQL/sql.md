@@ -1158,19 +1158,67 @@ SELECT date_trunc('month', p.purchase_date)::date AS period_start,
 ```
 # Рекурсивные подзапросы
 ## Подзапрос во фразе FROM (1/12)
-
+Эталонное решение:
 ``` sql
-SELECT p.employee_id, p.purchase_id, SUM(pi.price * pi.count) AS total_purchase_price
-FROM purchase p
-JOIN purchase_item pi ON p.purchase_id = pi.purchase_id
-GROUP BY p.purchase_id
-order by employee_id
+SELECT e.employee_id,
+       e.last_name,
+       e.first_name,
+       p.purchase_id,
+       pp.price_purchase,
+       round (100 * price_purchase / ep.price_total) AS price_total_percent,
+       ep.price_total,
+       ep.count_total
+  FROM purchase p,
+       (SELECT p.employee_id,
+               sum (pi.price * pi.count) AS price_total,
+               count (distinct p.purchase_id) AS count_total
+          FROM purchase p,
+               purchase_item pi
+         WHERE pi.purchase_id = p.purchase_id
+         GROUP BY p.employee_id
+       ) ep,
+       (SELECT p.purchase_id,
+               sum (pi.price * pi.count) as price_purchase
+          FROM purchase p,
+               purchase_item pi
+         WHERE pi.purchase_id = p.purchase_id
+         GROUP BY p.purchase_id
+       ) pp,
+       employee e
+ WHERE e.employee_id = p.employee_id
+   AND ep.employee_id = p.employee_id
+   AND pp.purchase_id = p.purchase_id
+ ORDER BY ep.count_total DESC,
+          e.employee_id,
+          pp.price_purchase,
+          p.purchase_id
 
 ```
----
-
+Моё решение:
 ``` sql
-
+SELECT 
+    p.employee_id, 
+    pt.last_name, 
+    pt.first_name, 
+    p.purchase_id, 
+    pt.price_purchase, 
+    ROUND(100 * pt.price_purchase / SUM(pt.price_purchase) OVER (PARTITION BY p.employee_id), 0) AS price_total_percent, 
+    SUM(pt.price_purchase) OVER (PARTITION BY p.employee_id) AS price_total, 
+    COUNT(p.purchase_id) OVER (PARTITION BY p.employee_id) AS count_total
+FROM (
+    SELECT 
+        p.employee_id, 
+        e.last_name, 
+        e.first_name, 
+        p.purchase_id, 
+        SUM(pi.price * pi.count) AS price_purchase
+    FROM purchase p
+    JOIN purchase_item pi ON p.purchase_id = pi.purchase_id
+    JOIN employee e ON p.employee_id = e.employee_id
+    GROUP BY p.purchase_id, e.last_name, e.first_name, p.employee_id
+) pt
+JOIN purchase p ON pt.purchase_id = p.purchase_id
+order by count_total desc, employee_id, price_purchase desc, purchase_id
 ```
 ---
 
