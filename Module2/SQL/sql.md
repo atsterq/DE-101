@@ -858,7 +858,7 @@ SELECT DISTINCT
  ORDER BY first_name
 
 ```
-# Математические функции
+## Математические функции
 Простейшие арифметические операции (+ - * /) (1/13)
 
 
@@ -1027,8 +1027,8 @@ SELECT pp.product_id,
   FROM product_price pp
  ORDER BY pp.price desc
 ```
-# Основы работы с датами
-## Текущая дата на сервере (1/12)
+## Основы работы с датами
+ Текущая дата на сервере (1/12)
 
 ``` sql
 SELECT CURRENT_DATE AS date,
@@ -1157,7 +1157,7 @@ SELECT date_trunc('month', p.purchase_date)::date AS period_start,
  ORDER BY period_start
 ```
 # Рекурсивные подзапросы
-## Подзапрос во фразе FROM (1/12)
+ Подзапрос во фразе FROM (1/12)
 Эталонное решение:
 ``` sql
 SELECT e.employee_id,
@@ -1221,9 +1221,29 @@ JOIN purchase p ON pt.purchase_id = p.purchase_id
 order by count_total desc, employee_id, price_purchase desc, purchase_id
 ```
 ---
+Введение в WITH (2/12)
 
 ``` sql
-
+WITH employee_result AS (
+  SELECT p.employee_id,
+         sum (pi.price * pi.count) AS sum_purchases
+    FROM purchase p,
+         purchase_item pi
+   WHERE pi.purchase_id = p.purchase_id
+     AND p.employee_id IS NOT NULL
+   GROUP BY p.employee_id
+)
+SELECT er.employee_id,
+       e.last_name,
+       e.first_name,
+       er.sum_purchases
+  FROM employee_result er,
+       employee e
+ WHERE e.employee_id = er.employee_id
+   AND er.sum_purchases < (SELECT avg (ern.sum_purchases)
+                             FROM employee_result ern)
+ ORDER BY er.sum_purchases,
+          er.employee_id
 ```
 ---
 
