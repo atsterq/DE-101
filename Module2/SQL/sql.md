@@ -1246,9 +1246,45 @@ SELECT er.employee_id,
           er.employee_id
 ```
 ---
+Несколько подзапросов в WITH (3/12)
 
 ``` sql
+WITH employee_result AS (
+  SELECT p.employee_id,
+         sum (pi.price * pi.count) AS sum_purchases
+    FROM purchase p,
+         purchase_item pi
+   WHERE pi.purchase_id = p.purchase_id
+     AND p.employee_id IS NOT NULL
+   GROUP BY p.employee_id
+),
+employee_action AS (
+  (SELECT er.employee_id,
+          er.sum_purchases,
+          'Уволить' AS action
+     FROM employee_result er
+    ORDER BY er.sum_purchases
+    LIMIT 2)
 
+   UNION ALL
+
+  (SELECT er.employee_id,
+          er.sum_purchases,
+          'Повысить' AS action
+     FROM employee_result er
+    ORDER BY er.sum_purchases desc
+    LIMIT 2)
+)
+SELECT ea.employee_id,
+       e.last_name,
+       e.first_name,
+       ea.sum_purchases,
+       ea.action
+  FROM employee_action ea,
+       employee e
+ WHERE e.employee_id = ea.employee_id
+ ORDER BY ea.sum_purchases,
+          ea.employee_id
 ```
 ---
 
