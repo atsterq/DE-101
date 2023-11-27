@@ -1287,9 +1287,21 @@ SELECT ea.employee_id,
           ea.employee_id
 ```
 ---
+Простейший рекурсивный запрос (4/12)
 
 ``` sql
-
+WITH RECURSIVE lv_recursive (num) as (
+  SELECT -10 AS num
+    
+    UNION ALL
+  
+  SELECT p.num + 1
+    FROM lv_recursive p
+   WHERE p.num < 10
+)
+SELECT num
+  FROM lv_recursive
+ ORDER BY num
 ```
 ---
 
