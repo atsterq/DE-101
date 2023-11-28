@@ -1304,9 +1304,34 @@ SELECT num
  ORDER BY num
 ```
 ---
+Рекурсивный запрос посложнее (5/12)
 
 ``` sql
-
+WITH RECURSIVE lv_initial AS (
+    SELECT 101 AS start_number,
+           10 AS count_iterations
+     UNION ALL
+    SELECT 201 AS start_number,
+           15 AS count_iterations
+     UNION ALL
+    SELECT 301 AS start_number,
+           20 AS count_iterations
+), 
+lv_numbers (count_iterations, current_iteration, result_number) AS (
+    SELECT count_iterations,
+           1 AS current_iteration,
+           start_number AS result_number
+      FROM lv_initial
+     UNION ALL
+    SELECT p.count_iterations,
+           p.current_iteration + 1,
+           p.result_number + 1
+      FROM lv_numbers p
+     WHERE p.current_iteration < p.count_iterations
+)
+SELECT n.result_number
+  FROM lv_numbers n
+ ORDER BY n.result_number
 ```
 ---
 
