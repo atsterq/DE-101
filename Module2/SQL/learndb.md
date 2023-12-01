@@ -1390,6 +1390,48 @@ SELECT e.employee_id,
   FROM lv_hierarchy e
 ```
 ---
+Сортировка (плохая) (8/12)
+
+``` sql
+WITH RECURSIVE lv_hierarchy AS (
+  SELECT e.employee_id,
+         e.first_name,
+         e.last_name,
+         0 AS count_managers,
+         '' AS managers
+    FROM employee e
+  WHERE e.manager_id IS NULL
+
+   UNION ALL
+  
+  SELECT e.employee_id,
+         e.first_name,
+         e.last_name,
+         p.count_managers + 1 AS count_managers,
+         p.managers || '; ' || p.first_name || ' ' || p.last_name
+    FROM lv_hierarchy p,
+         employee e
+   where e.manager_id = p.employee_id
+)
+SELECT e.employee_id,
+       e.first_name,
+       e.last_name,
+       e.count_managers,
+       trim('; ' from e.managers) AS managers
+  FROM lv_hierarchy e
+ ORDER BY e.managers || '; ' || e.first_name || ' ' || e.last_name
+```
+---
+
+``` sql
+
+```
+---
+
+``` sql
+
+```
+---
 
 ``` sql
 
