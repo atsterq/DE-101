@@ -1422,9 +1422,47 @@ SELECT e.employee_id,
  ORDER BY e.managers || '; ' || e.first_name || ' ' || e.last_name
 ```
 ---
+Сортировка (надежная) (9/12)
 
 ``` sql
-
+WITH RECURSIVE lv_hierarchy AS (
+  SELECT le.employee_id,
+         le.first_name,
+         le.last_name,
+         0 AS count_managers,
+         '' AS managers,
+         array[row_number () over (order by le.first_name || ' ' || le.last_name, le.employee_id)] AS path_sort
+    FROM lv_employee le
+  WHERE le.manager_id IS NULL
+   UNION ALL
+  SELECT le.employee_id,
+         le.first_name,
+         le.last_name,
+         p.count_managers + 1 AS count_managers,
+         p.managers || '; ' || p.first_name || ' ' || p.last_name,
+         p.path_sort || row_number () over (partition by le.manager_id order by le.first_name || ' ' || le.last_name, le.employee_id) AS path_sort
+    FROM lv_hierarchy p,
+         lv_employee le
+   where le.manager_id = p.employee_id),
+lv_employee AS (
+  SELECT e.employee_id, 
+         e.first_name, 
+         e.last_name, 
+         e.manager_id
+    FROM employee e
+   UNION ALL
+  SELECT e.employee_id * 1000, 
+         e.first_name, 
+         e.last_name, 
+         e.manager_id * 1000
+    FROM employee e)
+SELECT e.employee_id,
+       e.first_name,
+       e.last_name,
+       e.count_managers,
+       trim('; ' from e.managers) AS managers
+  FROM lv_hierarchy e
+ ORDER BY e.path_sort
 ```
 ---
 
