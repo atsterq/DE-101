@@ -1538,6 +1538,7 @@ SELECT lpad('', (c.level - 1) * 4, '.') || array_to_string(c.path_sort, '.') || 
  ORDER BY c.path_sort
 ```
 ---
+Листовые строки CONNECT_BY_ISLEAF (12/12)
 
 ``` sql
 
