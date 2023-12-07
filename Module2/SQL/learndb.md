@@ -1541,7 +1541,35 @@ SELECT lpad('', (c.level - 1) * 4, '.') || array_to_string(c.path_sort, '.') || 
 Листовые строки CONNECT_BY_ISLEAF (12/12)
 
 ``` sql
+WITH RECURSIVE lv_hierarchy AS (
+  SELECT e.employee_id,
+         e.first_name,
+         e.last_name,
+         0 AS count_managers,
+         array[row_number() over (ORDER BY e.first_name, e.last_name, e.employee_id)] AS sort
+    FROM employee e
+  WHERE e.manager_id IS NULL
 
+   UNION ALL
+  
+  SELECT e.employee_id,
+         e.first_name,
+         e.last_name,
+         p.count_managers + 1 AS count_managers,
+         p.sort || row_number() over (PARTITION BY e.manager_id ORDER BY e.first_name, e.last_name, e.employee_id) AS sort
+    FROM lv_hierarchy p,
+         employee e
+   where e.manager_id = p.employee_id
+)
+SELECT e.employee_id,
+       lpad('', 8 * e.count_managers, ' ') || e.first_name || ' ' || e.last_name AS full_name,
+       exists (
+          SELECT 1
+            FROM employee ch
+           WHERE ch.manager_id = e.employee_id
+       ) AS is_manager
+  FROM lv_hierarchy e
+ ORDER BY e.sort
 ```
 ---
 
