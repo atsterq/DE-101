@@ -1572,8 +1572,14 @@ SELECT e.employee_id,
  ORDER BY e.sort
 ```
 ---
+Получение номера строки (1/5)
 
 ``` sql
+SELECT row_number() OVER (ORDER BY e.last_name, e.first_name) AS row_num,
+       e.last_name,
+       e.first_name
+  FROM employee e
+ ORDER BY row_num
 
 ```
 ---
