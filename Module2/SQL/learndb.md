@@ -1600,8 +1600,19 @@ SELECT row_number()
  ORDER BY s.name, e.rank_id, position
 ```
 ---
+Составляем рейтинг - RANK (3/5)
 
 ``` sql
+SELECT e.store_id,
+       s.name,
+       count(*) AS count_employees,
+       rank() OVER (ORDER BY count (*) DESC) AS position
+  FROM employee e,
+       store s
+ WHERE s.store_id = e.store_id
+ GROUP BY e.store_id,
+          s.name
+ ORDER BY position, s.name
 
 ```
 ---
