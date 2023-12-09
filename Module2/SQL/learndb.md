@@ -1616,8 +1616,22 @@ SELECT e.store_id,
 
 ```
 ---
+Несколько человек на место - DENSE_RANK (4/5)
 
 ``` sql
+SELECT *
+  FROM (SELECT e.store_id,
+               s.name,
+               count(*) AS count_employees,
+               dense_rank() OVER (ORDER BY count (*)) AS position
+          FROM employee e,
+               store s
+         WHERE s.store_id = e.store_id
+         GROUP BY e.store_id,
+                  s.name
+       ) s
+ WHERE s.position <= 3
+ ORDER BY s.position, s.name
 
 ```
 ---
