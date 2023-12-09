@@ -1635,9 +1635,18 @@ SELECT *
 
 ```
 ---
+Разделение на группы - NTILE (5/5)
 
 ``` sql
-
+SELECT round (100.0 * sum (p.sum_product) / max (p.sum_total), 2) AS percent
+  FROM (SELECT pi.product_id,
+               sum (pi.count) AS sum_product,
+               sum(sum (pi.count)) over () AS sum_total,
+               ntile(5) over (ORDER BY sum(pi.count) desc) AS group_number
+          FROM purchase_item pi
+         GROUP BY pi.product_id
+       ) p
+ WHERE p.group_number = 1
 ```
 ---
 
