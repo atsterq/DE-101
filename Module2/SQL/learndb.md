@@ -1583,9 +1583,21 @@ SELECT row_number() OVER (ORDER BY e.last_name, e.first_name) AS row_num,
 
 ```
 ---
+Номер строки в рамках группы (2/5)
 
 ``` sql
-
+SELECT row_number() 
+          OVER (PARTITION BY s.store_id, e.rank_id
+                ORDER BY e.first_name, e.last_name)
+          AS position, 
+       s.name AS store_name,
+       e.rank_id,
+       e.first_name,
+       e.last_name
+  FROM employee e,
+       store s
+ WHERE s.store_id = e.store_id
+ ORDER BY s.name, e.rank_id, position
 ```
 ---
 
