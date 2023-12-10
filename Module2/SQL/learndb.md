@@ -1649,9 +1649,17 @@ SELECT round (100.0 * sum (p.sum_product) / max (p.sum_total), 2) AS percent
  WHERE p.group_number = 1
 ```
 ---
+Общая информация (1/7)
 
 ``` sql
-
+SELECT pp.store_id,
+       pp.product_id,
+       pp.price,
+       max(pp.price) over (PARTITION BY pp.product_id) as max_price_product,
+       max(pp.price) over (PARTITION BY pp.store_id) as max_price_in_store,
+       max(pp.price) over () as max_price_total
+  FROM product_price pp
+ ORDER BY pp.store_id, pp.price
 ```
 ---
 
