@@ -1576,6 +1576,7 @@ SELECT e.employee_id,
 
 ``` sql
 SELECT row_number() OVER (ORDER BY e.last_name, e.first_name) AS row_num,
+-- Оконные агрегатные функции(func_name() over) не изменяют количество строк в результате запроса.
        e.last_name,
        e.first_name
   FROM employee e
@@ -1652,14 +1653,15 @@ SELECT round (100.0 * sum (p.sum_product) / max (p.sum_total), 2) AS percent
 Общая информация (1/7)
 
 ``` sql
-SELECT pp.store_id,
-       pp.product_id,
-       pp.price,
+SELECT pp.store_id, pp.product_id, p.category_id, pp.price,
        max(pp.price) over (PARTITION BY pp.product_id) as max_price_product,
        max(pp.price) over (PARTITION BY pp.store_id) as max_price_in_store,
+       max(pp.price) over (PARTITION BY p.category_id) as max_price_in_category,
+       max(pp.price) over (PARTITION BY p.category_id, pp.store_id) as max_price_in_category_and_store,  
        max(pp.price) over () as max_price_total
-  FROM product_price pp
- ORDER BY pp.store_id, pp.price
+  FROM product_price pp, product p
+  where pp.product_id = p.product_id
+ ORDER BY p.category_id, pp.price, pp.product_id, pp.store_id
 ```
 ---
 
