@@ -1654,6 +1654,7 @@ SELECT round (100.0 * sum (p.sum_product) / max (p.sum_total), 2) AS percent
 
 ``` sql
 SELECT pp.store_id, pp.product_id, p.category_id, pp.price,
+-- Главная прелесть оконных функций, что на одни и те же данные можно смотреть в разных разрезах в рамках одного запроса.
        max(pp.price) over (PARTITION BY pp.product_id) as max_price_product,
        max(pp.price) over (PARTITION BY pp.store_id) as max_price_in_store,
        max(pp.price) over (PARTITION BY p.category_id) as max_price_in_category,
