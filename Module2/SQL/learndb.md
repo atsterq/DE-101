@@ -1665,137 +1665,124 @@ SELECT pp.store_id, pp.product_id, p.category_id, pp.price,
  ORDER BY p.category_id, pp.price, pp.product_id, pp.store_id
 ```
 ---
+### Многообразие агрегатных функций (2/7)
+В большинстве задач можно обойтись небольшим набором агрегатных ф-й, либо оконной агр. ф-ии, добавив OVER (...):
+- avg(выражение) - арифметическое среднее;
+- min(выражение) - минимальное значение выражения;
+- max(выражение) - маскимальное значение выражения;
+- sum(выражение) - сумма значений выражения;
+- count(*) - количество строк в результате запроса;
+- count(выражение) - количество значений выражения, не равных NULL.
 
+``` sql
+SELECT pi.purchase_id,
+       pi.product_id,
+       pi.total_price,
+       min(pi.total_price) over (PARTITION BY pi.purchase_id) AS total_price_min,
+       max(pi.total_price) over (PARTITION BY pi.purchase_id) AS total_price_max,
+       avg(pi.total_price) over (PARTITION BY pi.purchase_id) AS total_price_avg,
+       count(*) over (PARTITION BY pi.purchase_id) AS count_products,
+       sum(pi.total_price) over (PARTITION BY pi.purchase_id) AS purchase_price
+  FROM (SELECT pi.purchase_id,
+               pi.product_id,
+               pi.price * pi.count AS total_price
+          FROM purchase_item pi
+       ) pi
+ORDER BY pi.purchase_id,
+         pi.product_id
+```
+---
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
+### 
 ``` sql
 
 ```
 ---
-
-``` sql
-
-```
----
-
-``` sql
-
-```
----
-
-``` sql
-
-```
----
-
-``` sql
-
-```
----
-
-``` sql
-
-```
----
-
-``` sql
-
-```
----
-
-``` sql
-
-```
----
-
-``` sql
-
-```
----
-
+### 
 ``` sql
 
 ```
