@@ -1650,7 +1650,7 @@ SELECT round (100.0 * sum (p.sum_product) / max (p.sum_total), 2) AS percent
  WHERE p.group_number = 1
 ```
 ---
-Общая информация (1/7)
+### Общая информация (1/7)
 
 ``` sql
 SELECT pp.store_id, pp.product_id, p.category_id, pp.price,
@@ -1692,13 +1692,76 @@ ORDER BY pi.purchase_id,
          pi.product_id
 ```
 ---
-### 
+### Обработка NULL значений (3/7)
+
+Мое:
 ``` sql
+select distinct p.purchase_id, 
+-- без distinct в ответе будет на каждую позицию заказа отдельная строка
+e.last_name || ' ' || e.first_name as employee,
+sum(pi.price * pi.count) over (partition by p.purchase_id) as price_purchase,
+sum(pi.price * pi.count) over (partition by e.employee_id) as total_by_employee 
+from purchase p
+left join employee e on p.employee_id = e.employee_id
+-- left join для добавление nulls в ответе
+join purchase_item pi on p.purchase_id = pi.purchase_id
+order by employee nulls last, p.purchase_id
+```
+Эталонное:
+``` sql
+SELECT p.purchase_id,
+       e.last_name || ' ' || e.first_name AS employee,
+       p.price_purchase,
+       sum(p.price_purchase) over (PARTITION BY p.employee_id) AS total_by_employee
+  FROM (SELECT p.purchase_id,
+               p.employee_id,
+               sum (pi.count * pi.price) AS price_purchase
+          FROM purchase p,
+               purchase_item pi
+         WHERE pi.purchase_id = p.purchase_id
+         GROUP BY p.purchase_id,
+                  p.employee_id
+       ) p
+  LEFT JOIN
+       employee e
+    ON e.employee_id = p.employee_id
+ ORDER BY employee NULLS LAST,
+          p.purchase_id
 
 ```
 ---
-### 
+### Нарастающий итог SUM + ORDER BY (4/7)
+Добавив order by в оконную ф-ю можно получить нарастающий итог.  
+Чтобы вычислить агрегатную функцию по окну с указанием ORDER BY внутри over, делай так:
+1. Разбивай все строки результата на группы в соответствии с PARTITION BY, указанным в over. В нашем случае PARTITION BY опущен, поэтому группа у нас одна - все строки.
+2. Сортируй строки в группах в порядке, указанном в ORDER BY внутри over.
+3. Вычисляй функцию последовательно для строк, начиная с первой. Для каждой очередной строки для вычисления значения бери строки от начала и до текущей.  
+
+Мое:
 ``` sql
+select distinct p.purchase_id, p.purchase_date,
+sum(pi.price * pi.count) over (partition by p.purchase_id) as price_purchase,
+sum(pi.price * pi.count) over (order by p.purchase_date) as price_total
+from purchase p, purchase_item pi
+where p.purchase_id = pi.purchase_id
+order by p.purchase_date
+```
+Эталонное:
+``` sql
+SELECT p.purchase_id,
+       p.purchase_date,
+       p.price_purchase,
+       sum (p.price_purchase) over (ORDER BY p.purchase_date) AS price_total
+  FROM (SELECT p.purchase_id,
+               p.purchase_date,
+               sum (pi.count * pi.price) AS price_purchase
+          FROM purchase p,
+               purchase_item pi
+         WHERE pi.purchase_id = p.purchase_id
+         GROUP BY p.purchase_id,
+                  p.purchase_date
+       ) p
+ ORDER BY p.purchase_date
 
 ```
 ---
