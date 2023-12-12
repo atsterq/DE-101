@@ -1765,8 +1765,34 @@ SELECT p.purchase_id,
 
 ```
 ---
-### 
+### Неуникальные значения в нарастающем итоге SUM + ORDER BY (5/7)
+Мое:
 ``` sql
+select distinct p.store_id, p.purchase_date,
+sum(pi.price * pi.count) over (partition by p.purchase_id) as price_purchase,
+sum(pi.price * pi.count) over (partition by p.store_id order by p.store_id, p.purchase_date) as price_total
+from purchase p, purchase_item pi
+where p.purchase_id = pi.purchase_id
+order by p.store_id, p.purchase_date
+```
+Эталонное:
+``` sql
+SELECT p.store_id,
+       p.purchase_date,
+       p.price_purchase,
+       sum (p.price_purchase) over (PARTITION BY p.store_id ORDER BY p.purchase_date) AS price_total
+  FROM (SELECT p.store_id,
+               p.purchase_date,
+               sum (pi.count * pi.price) AS price_purchase
+          FROM purchase p,
+               purchase_item pi
+         WHERE pi.purchase_id = p.purchase_id
+         GROUP BY p.store_id,
+                  p.purchase_id,
+                  p.purchase_date
+       ) p
+ ORDER BY p.store_id, 
+          p.purchase_date
 
 ```
 ---
