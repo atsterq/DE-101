@@ -1796,9 +1796,13 @@ SELECT p.store_id,
 
 ```
 ---
-### 
-``` sql
+### Собираем строки через разделитель - STRING_AGG (6/7)
 
+``` sql
+select e.store_id,
+string_agg(e.
+from employee e
+order by e.store_id
 ```
 ---
 ### 
