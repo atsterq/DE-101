@@ -1799,15 +1799,22 @@ SELECT p.store_id,
 ### Собираем строки через разделитель - STRING_AGG (6/7)
 
 ``` sql
-select e.store_id,
-string_agg(e.
+select distinct e.store_id,
+string_agg(e.last_name || ' ' || e.first_name, '; ' order by e.last_name) as list_employees
 from employee e
+group by e.store_id
 order by e.store_id
 ```
 ---
-### 
-``` sql
+### WITHIN GROUP (7/7)
 
+``` sql
+SELECT p.product_id,
+       p.name,
+       p.description
+  FROM product p
+ WHERE p.product_id = (SELECT mode() WITHIN GROUP (ORDER BY pi.product_id)
+                         FROM purchase_item pi)
 ```
 ---
 ### 
