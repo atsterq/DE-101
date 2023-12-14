@@ -1830,9 +1830,15 @@ SELECT e.employee_id,
 
 ```
 ---
-### 
-``` sql
+### COALESCE с разными типами данных (2/5)
 
+``` sql
+SELECT e.employee_id,
+       e.last_name,
+       e.first_name,
+       coalesce(e.manager_id::text, 'отсутствует') as manager_id
+  FROM employee e
+ ORDER BY e.employee_id
 ```
 ---
 ### 
