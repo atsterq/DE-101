@@ -1857,9 +1857,22 @@ from product_price pp) as pp
 order by pp.product_id, pp.price, pp.store_id
 ```
 ---
-### 
-``` sql
+### CASE с условиями (4/5)
 
+``` sql
+SELECT e.employee_id,
+       e.first_name,
+       e.last_name,
+       e.rank_id,
+       CASE 
+         WHEN e.rank_id IN ('CHIEF', 'DIRECTOR', 'CEO')
+           THEN 'Руководитель'
+         WHEN e.rank_id IN ('SELLER')
+           THEN 'Продажник'
+         WHEN e.rank_id IN ('GENERAL_MANAGER', 'MANAGER')
+           THEN 'Менеджер'
+       END as rank_group
+  FROM employee e
 ```
 ---
 ### 
