@@ -1841,9 +1841,20 @@ SELECT e.employee_id,
  ORDER BY e.employee_id
 ```
 ---
-### 
-``` sql
+### CASE по значению (3/5)
 
+``` sql
+select pp.*,
+case pp.price
+when pp.min_price then 'Выгодная цена'
+when pp.max_price then 'Высокая цена'
+else 'Рыночная цена'
+end as price_name
+from (select pp.*, 
+min(price) over (partition by pp.product_id) AS min_price,
+max(price) over (partition by pp.product_id) AS max_price
+from product_price pp) as pp
+order by pp.product_id, pp.price, pp.store_id
 ```
 ---
 ### 
