@@ -1813,12 +1813,20 @@ SELECT p.product_id,
        p.name,
        p.description
   FROM product p
+  --  чтобы в ответ попала лишь одна нужная запись пропиши условие что её id равен определенному продукту (самому популярному)
  WHERE p.product_id = (SELECT mode() WITHIN GROUP (ORDER BY pi.product_id)
                          FROM purchase_item pi)
 ```
 ---
-### 
+### COALESCE - первый не NULL аргумент (1/5)
+
 ``` sql
+SELECT e.employee_id,
+       e.last_name,
+       e.first_name,
+       coalesce(e.middle_name, '-') as middle_name
+  FROM employee e
+ ORDER BY e.employee_id
 
 ```
 ---
