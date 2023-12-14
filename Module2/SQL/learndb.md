@@ -1875,52 +1875,12 @@ SELECT e.employee_id,
   FROM employee e
 ```
 ---
-### 
-``` sql
+### NULLIF - значение NULL при равенстве аргументов (5/5)
 
-```
----
-### 
 ``` sql
-
-```
----
-### 
-``` sql
-
-```
----
-### 
-``` sql
-
-```
----
-### 
-``` sql
-
-```
----
-### 
-``` sql
-
-```
----
-### 
-``` sql
-
-```
----
-### 
-``` sql
-
-```
----
-### 
-``` sql
-
-```
----
-### 
-``` sql
-
+SELECT s.store_id,
+       s.name AS name_full,
+       split_part(s.name, '-', 1) AS name_base,
+       nullif(split_part(s.name, '-', 2),'') AS suffix
+  FROM store s
 ```
