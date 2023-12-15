@@ -17,5 +17,5 @@ All of these groups make decisions (decision making) to successfully grow the bu
 One of the tasks of the data engineer is to **provide data** to the groups described above for further **decision making**. Therefore, it is important to understand exactly how the work done by the data engineer affects what happens to the business.  
 
 Practical work of learning data engineering instruments and concepts following [DE-101](https://github.com/Data-Learn/data-engineering/blob/master/DE%20-%20101%20Guide.md) course:
-- [Excel dashboards and introduction to data flow architecture](https://github.com/atsterq/DE-101/blob/main/Module1/Module1.md);
-- [Data bases and SQL](https://github.com/atsterq/DE-101/blob/main/Module2/Module2.md).
+- [Excel dashboards and introduction to data flow architecture](https://github.com/atsterq/DE-101/blob/main/Module1/Module1.md) in Module 1;
+- [Data bases and SQL](https://github.com/atsterq/DE-101/blob/main/Module2/Module2.md) in Module 2.
