@@ -19,13 +19,18 @@ def find_products(products: pd.DataFrame) -> pd.DataFrame:
     return df
 ```
 ---
-## 
+## 584. Find Customer Referee
 slq:
 ``` sql
-
+SELECT name FROM customer WHERE referee_id <> 2 OR referee_id IS NULL
 ```
 pandas:
 ``` python
+import pandas as pd
+
+def find_customer_referee(customer: pd.DataFrame) -> pd.DataFrame:
+    result = customer[(customer['referee_id'] != 2) | (customer['referee_id'].isnull())][['name']]
+    return result
 
 ```
 ---
