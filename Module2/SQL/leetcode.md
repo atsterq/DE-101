@@ -34,14 +34,21 @@ def find_customer_referee(customer: pd.DataFrame) -> pd.DataFrame:
 
 ```
 ---
-## 
+## 595. Big Countries
 slq:
 ``` sql
-
+select w.name, w.population, w.area
+from world w
+where w.area >= 3000000 or w.population >= 25000000
 ```
 pandas:
 ``` python
+import pandas as pd
 
+def big_countries(world: pd.DataFrame) -> pd.DataFrame:
+    df = world[(world['area'] >= 3000000) | (world['population'] >= 25000000)]
+    df = df[['name', 'population', 'area']]
+    return df
 ```
 ---
 ## 
