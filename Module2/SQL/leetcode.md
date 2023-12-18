@@ -37,7 +37,10 @@ def find_customer_referee(customer: pd.DataFrame) -> pd.DataFrame:
 ## 
 slq:
 ``` sql
-
+select distinct v.author_id as id 
+from views v
+where v.author_id = v.viewer_id
+order by id
 ```
 pandas:
 ``` python
