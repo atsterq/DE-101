@@ -25,7 +25,7 @@ SQL is the most dominant language for data operations in data engineering. Data 
 I'm going to use [sqldbm](https://app.sqldbm.com/) to create data models, but many other options are viable.  
 
 - Given asset of data (superstore) is represented by this data model:
-[[2.4/old_model.png]]
+![image](2.4/old_model.png)
 
 - So on this basis I created this logical data model with corresponding relations: ![image](2.4/logical_model.png)
 
