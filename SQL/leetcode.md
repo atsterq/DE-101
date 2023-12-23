@@ -76,13 +76,21 @@ def article_views(views: pd.DataFrame) -> pd.DataFrame:
     return result_df
 ```
 ---
-## 
+## 1683. Invalid Tweets
 slq:
 ``` sql
-
+select tweet_id
+from tweets
+where char_length(content) > 15
 ```
 pandas:
 ``` python
+import pandas as pd
+
+def invalid_tweets(tweets: pd.DataFrame) -> pd.DataFrame:
+    df = tweets[(tweets['content'].str.len() > 15)]
+    df = df[['tweet_id']]
+    return df
 
 ```
 ---

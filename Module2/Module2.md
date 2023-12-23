@@ -29,7 +29,7 @@ I'm going to use [sqldbm](https://app.sqldbm.com/) to create data models, but ma
 
 - So on this basis I created this logical data model with corresponding relations: ![image](2.4/logical_model.png)
 
-- Then forward engineered graphical logical model into [sql query](2.4/create_dw_tables.sql).
+- Then forward engineered graphical logical model into [sql query](2.4/create_dw_tables.sql) to create new dw schema and relative tables.
 # Draw charts in Google Sheets
 
 # Draw graphs in KlipFolio
