@@ -272,6 +272,7 @@ CREATE INDEX FK_customer ON dw.sale_fact
  customer_id
 );
 
+-- todo: fix joins. current query makes many duplicates
 insert into dw.sale_fact (row_id, order_id, sales, quantity, discount, profit, ship_id, ship_date, 
 order_date, product_id, geography_id, customer_id, return_id)
 select o.row_id, o.order_id, cast(o.sales as integer), o.quantity, cast(o.discount as integer), 
