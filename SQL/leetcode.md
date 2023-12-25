@@ -94,14 +94,26 @@ def invalid_tweets(tweets: pd.DataFrame) -> pd.DataFrame:
 
 ```
 ---
-## 322
+## [1378. Replace Employee ID With The Unique Identifier](https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier/)
 slq:
 ``` sql
+select eu.unique_id, e.name
 
+from employees e left join employeeuni eu on e.id = eu.id
 ```
 pandas:
 ``` python
+import pandas as pd
 
+  
+
+def replace_employee_id(employees: pd.DataFrame, employee_uni: pd.DataFrame) -> pd.DataFrame:
+
+    merged = employees.merge(employee_uni, on='id', how='left')
+
+    result = merged[['unique_id', 'name']]
+
+    return result
 ```
 ---
 ## 
