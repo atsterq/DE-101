@@ -116,14 +116,26 @@ def replace_employee_id(employees: pd.DataFrame, employee_uni: pd.DataFrame) -> 
     return result
 ```
 ---
-## 
+## [1068. Product Sales Analysis I](https://leetcode.com/problems/product-sales-analysis-i/)
 slq:
 ``` sql
+select p.product_name, s.year, s.price
 
+from sales s join product p on s.product_id = p.product_id
 ```
 pandas:
 ``` python
+import pandas as pd
 
+  
+
+def sales_analysis(sales: pd.DataFrame, product: pd.DataFrame) -> pd.DataFrame:
+
+    merged = sales.merge(product, on='product_id')
+
+    result = merged[['product_name', 'year', 'price']]
+
+    return result
 ```
 ---
 ## 
