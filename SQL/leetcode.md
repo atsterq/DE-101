@@ -138,14 +138,30 @@ def sales_analysis(sales: pd.DataFrame, product: pd.DataFrame) -> pd.DataFrame:
     return result
 ```
 ---
-## 
+## [1581. Customer Who Visited but Did Not Make Any Transactions](https://leetcode.com/problems/customer-who-visited-but-did-not-make-any-transactions/)
 slq:
 ``` sql
+select distinct v.customer_id, count(v.visit_id) as count_no_trans
 
+from visits v left join transactions t on v.visit_id = t.visit_id
+
+where t.transaction_id is null
+
+group by customer_id
 ```
 pandas:
 ``` python
+import pandas as pd
 
+  
+
+def find_customers(visits: pd.DataFrame, transactions: pd.DataFrame) -> pd.DataFrame:
+
+    merge = visits.merge(transactions, how='left')
+
+    df = merge[merge['transaction_id'].isna()].groupby(['customer_id'], as_index=False).agg(count_no_trans=('visit_id', 'nunique'))
+
+    return df
 ```
 ---
 ## 
