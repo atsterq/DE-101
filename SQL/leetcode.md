@@ -164,14 +164,24 @@ def find_customers(visits: pd.DataFrame, transactions: pd.DataFrame) -> pd.DataF
     return df
 ```
 ---
-## 
+## 197. Rising Temperature
 slq:
 ``` sql
-
+select w1.id as Id
+from weather w1, weather w2
+where w1.recorddate - 1 = w2.recorddate and w1.temperature > w2.temperature
 ```
 pandas:
 ``` python
+import pandas as pd
 
+def rising_temperature(weather: pd.DataFrame) -> pd.DataFrame:
+    weather['recorddate'] = pd.to_datetime(weather['recorddate'])
+    weather_shifted = weather.copy()
+    weather_shifted['recorddate'] = weather_shifted['recorddate'] + pd.to_timedelta(1, unit='D')
+    merge = pd.merge(weather, weather_shifted, on='recorddate', suffixes=('_today', '_yesterday'))
+    result = merge[merge['temperature_today'] > merge['temperature_yesterday']][['id_today']].rename(columns={'id_today': 'Id'})
+    return result
 ```
 ---
 ## 
