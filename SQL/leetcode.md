@@ -184,18 +184,42 @@ def rising_temperature(weather: pd.DataFrame) -> pd.DataFrame:
     return result
 ```
 ---
-## 
-slq:
+## 1661. Average Time of Process per Machine
+postgreslq:  
+We join same table so that start of activity and end of activity will be inline of each other.  
+That way it is possible to subtract start from end.
 ``` sql
-
+SELECT a.machine_id, ROUND((avg(b.timestamp - a.timestamp)::numeric), 3) as processing_time
+-- round in postgresql will work only if we cast result of avg func to numeric
+FROM Activity a, 
+     Activity b
+WHERE 
+    a.machine_id = b.machine_id
+AND 
+    a.process_id = b.process_id
+AND 
+    a.activity_type = 'start'
+AND 
+    b.activity_type = 'end'
+group by a.machine_id
 ```
 pandas:
 ``` python
+import pandas as pd
+​
+def get_average_time(activity: pd.DataFrame) -> pd.DataFrame:
 
+    activity['timestamp'] = activity.apply(lambda x: x.timestamp * -1 if x.activity_type == 'start' else x.timestamp, axis=1)
+
+    sum_machine_process = activity.groupby(['machine_id', 'process_id'], as_index=False)['timestamp'].sum()
+
+    mean_machine = sum_machine_process.groupby(['machine_id'], as_index=False)['timestamp'].mean().round(3).rename(columns = {'timestamp': 'processing_time'})
+    
+    return mean_machine
 ```
 ---
 ## 
-slq:
+postgreslq:
 ``` sql
 
 ```
@@ -203,9 +227,8 @@ pandas:
 ``` python
 
 ```
----
 ## 
-slq:
+postgreslq:
 ``` sql
 
 ```
@@ -213,9 +236,8 @@ pandas:
 ``` python
 
 ```
----
 ## 
-slq:
+postgreslq:
 ``` sql
 
 ```
@@ -223,4 +245,147 @@ pandas:
 ``` python
 
 ```
+## 
+postgreslq:
+``` sql
 
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
