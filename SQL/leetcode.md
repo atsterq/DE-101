@@ -164,26 +164,62 @@ def find_customers(visits: pd.DataFrame, transactions: pd.DataFrame) -> pd.DataF
     return df
 ```
 ---
-## 577. Employee Bonus
+## 197. Rising Temperature
 slq:
 ``` sql
-select e.name, b.bonus
-from employee e left join bonus b on e.empId = b.empId
-where b.bonus < 1000 or b.bonus is null
+select w1.id as Id
+from weather w1, weather w2
+where w1.recorddate - 1 = w2.recorddate and w1.temperature > w2.temperature
 ```
 pandas:
 ``` python
 import pandas as pd
 
-def employee_bonus(employee: pd.DataFrame, bonus: pd.DataFrame) -> pd.DataFrame:
-    df = employee.merge(bonus, how='left')
-    df = df[(df['bonus'] < 1000) | df['bonus'].isnull()]
-    df = df[['name', 'bonus']]
-    return df
+def rising_temperature(weather: pd.DataFrame) -> pd.DataFrame:
+    weather['recorddate'] = pd.to_datetime(weather['recorddate'])
+    weather_shifted = weather.copy()
+    weather_shifted['recorddate'] = weather_shifted['recorddate'] + pd.to_timedelta(1, unit='D')
+    merge = pd.merge(weather, weather_shifted, on='recorddate', suffixes=('_today', '_yesterday'))
+    result = merge[merge['temperature_today'] > merge['temperature_yesterday']][['id_today']].rename(columns={'id_today': 'Id'})
+    return result
+```
+---
+## 1661. Average Time of Process per Machine
+postgreslq:  
+We join same table so that start of activity and end of activity will be inline of each other.  
+That way it is possible to subtract start from end.
+``` sql
+SELECT a.machine_id, ROUND((avg(b.timestamp - a.timestamp)::numeric), 3) as processing_time
+-- round in postgresql will work only if we cast result of avg func to numeric
+FROM Activity a, 
+     Activity b
+WHERE 
+    a.machine_id = b.machine_id
+AND 
+    a.process_id = b.process_id
+AND 
+    a.activity_type = 'start'
+AND 
+    b.activity_type = 'end'
+group by a.machine_id
+```
+pandas:
+``` python
+import pandas as pd
+​
+def get_average_time(activity: pd.DataFrame) -> pd.DataFrame:
+
+    activity['timestamp'] = activity.apply(lambda x: x.timestamp * -1 if x.activity_type == 'start' else x.timestamp, axis=1)
+
+    sum_machine_process = activity.groupby(['machine_id', 'process_id'], as_index=False)['timestamp'].sum()
+
+    mean_machine = sum_machine_process.groupby(['machine_id'], as_index=False)['timestamp'].mean().round(3).rename(columns = {'timestamp': 'processing_time'})
+    
+    return mean_machine
 ```
 ---
 ## 
-slq:
+postgreslq:
 ``` sql
 
 ```
@@ -191,9 +227,8 @@ pandas:
 ``` python
 
 ```
----
 ## 
-slq:
+postgreslq:
 ``` sql
 
 ```
@@ -201,9 +236,8 @@ pandas:
 ``` python
 
 ```
----
 ## 
-slq:
+postgreslq:
 ``` sql
 
 ```
@@ -211,9 +245,8 @@ pandas:
 ``` python
 
 ```
----
 ## 
-slq:
+postgreslq:
 ``` sql
 
 ```
@@ -221,4 +254,138 @@ pandas:
 ``` python
 
 ```
+## 
+postgreslq:
+``` sql
 
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
+## 
+postgreslq:
+``` sql
+
+```
+pandas:
+``` python
+
+```
