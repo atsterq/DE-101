@@ -164,14 +164,22 @@ def find_customers(visits: pd.DataFrame, transactions: pd.DataFrame) -> pd.DataF
     return df
 ```
 ---
-## 
+## 577. Employee Bonus
 slq:
 ``` sql
-
+select e.name, b.bonus
+from employee e left join bonus b on e.empId = b.empId
+where b.bonus < 1000 or b.bonus is null
 ```
 pandas:
 ``` python
+import pandas as pd
 
+def employee_bonus(employee: pd.DataFrame, bonus: pd.DataFrame) -> pd.DataFrame:
+    df = employee.merge(bonus, how='left')
+    df = df[(df['bonus'] < 1000) | df['bonus'].isnull()]
+    df = df[['name', 'bonus']]
+    return df
 ```
 ---
 ## 
