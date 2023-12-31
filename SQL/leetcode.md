@@ -238,11 +238,31 @@ def employee_bonus(employee: pd.DataFrame, bonus: pd.DataFrame) -> pd.DataFrame:
 ## 
 postgreslq:
 ``` sql
-
+select s.student_id, s.student_name, su.subject_name, count(e.subject_name) as attended_exams
+from students s cross join subjects su 
+left join examinations e on s.student_id = e.student_id and su.subject_name = e.subject_name
+group by s.student_id, s.student_name, su.subject_name
+order by student_id, subject_name
 ```
 pandas:
 ``` python
-
+def students_and_examinations(students: pd.DataFrame, subjects: pd.DataFrame, examinations: pd.DataFrame) -> pd.DataFrame:
+    return pd.merge(
+        left=pd.merge(
+            students, subjects, how='cross',
+        ).sort_values(
+            by=['student_id', 'subject_name']
+        ),
+        right=examinations.groupby(
+            ['student_id', 'subject_name'],
+        ).agg(
+            attended_exams=('subject_name', 'count')
+        ).reset_index(),
+        how='left',
+        on=['student_id', 'subject_name'],
+    ).fillna(0)[
+        ['student_id', 'student_name', 'subject_name', 'attended_exams']
+    ]
 ```
 ## 
 postgreslq:
