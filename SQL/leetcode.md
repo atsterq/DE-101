@@ -235,7 +235,7 @@ def employee_bonus(employee: pd.DataFrame, bonus: pd.DataFrame) -> pd.DataFrame:
     df = df[['name', 'bonus']]
     return df
 ```
-## 
+## 1280. Students and Examinations
 postgreslq:
 ``` sql
 select s.student_id, s.student_name, su.subject_name, count(e.subject_name) as attended_exams
