@@ -264,10 +264,13 @@ def students_and_examinations(students: pd.DataFrame, subjects: pd.DataFrame, ex
         ['student_id', 'student_name', 'subject_name', 'attended_exams']
     ]
 ```
-## 
+## 620. Not Boring Movies
 postgreslq:
 ``` sql
-
+select id, movie, description, rating
+from cinema c
+where description != 'boring' and mod(id,2) <> 0
+order by rating desc
 ```
 pandas:
 ``` python
