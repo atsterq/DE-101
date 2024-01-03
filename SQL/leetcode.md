@@ -272,18 +272,26 @@ from cinema c
 where description != 'boring' and mod(id,2) <> 0
 order by rating desc
 ```
-pandas:
-``` python
-
-```
-## 
+## 570. Managers with at Least 5 Direct Reports
 postgreslq:
 ``` sql
-
+select name from Employee 
+where id in (
+    select managerID 
+    from employee 
+    group by managerId 
+    having count(*)>=5)
 ```
 pandas:
 ``` python
+import pandas as pd
 
+def find_managers(employee: pd.DataFrame) -> pd.DataFrame:
+    managers = employee.groupby(
+        'managerId', as_index=False).agg(reporting=('id', 'count'),
+    ).query('5 <= reporting')['managerId']
+
+    return employee[employee['id'].isin(managers)][['name']]
 ```
 ## 
 postgreslq:
