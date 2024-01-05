@@ -302,14 +302,13 @@ LEFT JOIN Confirmations c
 ON s.user_id = c.user_id
 GROUP BY s.user_id
 ```
-## 
+## 1251. Average Selling Price
 postgreslq:
 ``` sql
-
-```
-pandas:
-``` python
-
+select p.product_id, coalesce(round(sum(p.price * u.units * 1.00) / sum(u.units * 1.00), 2), 0) as average_price
+from prices p left join unitssold u on p.product_id = u.product_id
+and u.purchase_date between p.start_date and  p.end_date
+group by 1
 ```
 ## 
 postgreslq:
