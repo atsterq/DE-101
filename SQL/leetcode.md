@@ -310,14 +310,14 @@ from prices p left join unitssold u on p.product_id = u.product_id
 and u.purchase_date between p.start_date and  p.end_date
 group by 1
 ```
-## 
+## 1075. Project Employees I
 postgreslq:
 ``` sql
-
-```
-pandas:
-``` python
-
+select p.project_id, 
+round(sum(e.experience_years) * 1.00 / count(*) * 1.00, 2) 
+as average_years
+from project p join employee e on p.employee_id = e.employee_id
+group by p.project_id
 ```
 ## 
 postgreslq:
