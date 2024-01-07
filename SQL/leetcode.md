@@ -319,7 +319,7 @@ LEFT JOIN Employee e
 ON p.employee_id = e.employee_id
 GROUP BY p.project_id
 ```
-## 
+## 1633. Percentage of Users Attended a Contest
 postgreslq:
 ``` sql
 select contest_id, 
